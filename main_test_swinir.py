@@ -276,6 +276,7 @@ def get_image_pair(args, path):
 
 
 def test(img_lq, model, args, window_size):
+    start_time = time.time()
     if args.tile is None:
         # test the image as a whole
         output = model(img_lq)
@@ -303,6 +304,8 @@ def test(img_lq, model, args, window_size):
                 W[..., h_idx*sf:(h_idx+tile)*sf, w_idx*sf:(w_idx+tile)*sf].add_(out_patch_mask)
         output = E.div_(W)
 
+    time_taken = time.time() - start_time
+    print(f'time {time_taken*1000:.4f}ms')
     return output
 
 if __name__ == '__main__':
